@@ -1,21 +1,38 @@
+import LotteryTicketServer.MainServer;
+import LotteryTicketServer.TicketGenerator;
+
 /**
  * Created By:  Gyanendra_Yadav
  * on 2023-04-22,Apr,2023
  * in Project: Default (Template) Project
- */// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+ */
+
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        MainServer server1 = new MainServer();
+        MainServer server2 = new MainServer();
+        server1.setSecondaryServer(server2);
+        server2.setSecondaryServer(server1);
+        server1.setIsPrimary(true); //marking first server as main server, so that it can be identified clearly
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        // Add some tickets to one of the servers
+        TicketGenerator ticket1 = new TicketGenerator("GRYNDSLOTRYTKT1", new int[]{1, 2, 3, 4, 5, 6});
+        TicketGenerator ticket2 = new TicketGenerator("GRYNDSLOTRYTKT2", new int[]{7, 8, 9, 10, 11, 12});
+        server1.addTicket(ticket1);
+        server1.addTicket(ticket2);
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+        // Replicating the data to the secondary server
+        server1.replicate();
+
+        // Print the tickets of both servers
+        System.out.println("Server 1 tickets:");
+        for (TicketGenerator ticket : server1.getTickets()) {
+            System.out.println(ticket);
+        }
+
+        System.out.println("\nServer 2 tickets:");
+        for (TicketGenerator ticket : server2.getTickets()) {
+            System.out.println(ticket);
         }
     }
 }

@@ -18,11 +18,11 @@ public class MainServer implements Serializable {
         this.TicketGenerators = new ArrayList<>();
     }
 
-    public void addTicketGenerator(TicketGenerator TicketGenerator) {
+    public void addTicket(TicketGenerator TicketGenerator) {
         this.TicketGenerators.add(TicketGenerator);
     }
 
-    public List<TicketGenerator> getTicketGenerators() {
+    public List<TicketGenerator> getTickets() {
         return this.TicketGenerators;
     }
 
@@ -35,14 +35,14 @@ public class MainServer implements Serializable {
     }
 
     public void replicate() {
-        // Only the primary server replicates its data to the secondary
+        // Only the primary server replicates its data to the secondary, we can identify this by using this boolean variable
         if (isPrimary) {
-            // Get the TicketGenerators from this server
-            List<TicketGenerator> TicketGeneratorsToReplicate = getTicketGenerators();
+            // This will be Getting Tickets from this server
+            List<TicketGenerator> TicketGeneratorsToReplicate = getTickets();
 
-            // Replicate the TicketGenerators to the other server
+            // This will be Replicating the Tickets to the other server
             for (TicketGenerator TicketGenerator : TicketGeneratorsToReplicate) {
-                secondaryServer.addTicketGenerator(TicketGenerator);
+                secondaryServer.addTicket(TicketGenerator);
             }
         }
     }
